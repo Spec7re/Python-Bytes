@@ -1,7 +1,7 @@
 from Account import Account
 from Deck import Deck
 
-from IPython.display import clear_output
+# from IPython.display import clear_output
 # BLACK JACK GAME
 newDeck = Deck()
 newDeck.build_deck()
@@ -9,6 +9,14 @@ newDeck.shuffle_deck()
 
 playerAcc = Account('Player',20)
 dealerAcc = Account('Dealer',20)
+
+
+def statusMessage(message):
+    filler = 18 - len(message)
+    print('---------------------')
+    print('---- ' +message.center(filler)+ ' ----')
+    print('---------------------')
+
 
 while True:
     try:
@@ -41,17 +49,15 @@ while gameOn:
         break
         
     print(playerAcc)
-    print('-------------------')
-    print('----  DEALING  ----')
-    print('-------------------')
+    statusMessage('DEALING')
     player = []
     dealer = []
     
     player = newDeck.draw_hand(player)
     dealer = newDeck.draw_hand(dealer)
     
-    print(dealer[0])
-    clear_output()
+    print('DEALER', dealer[0])
+
     drawOn = True
     pHit = ''
     dHit = ''
@@ -62,37 +68,31 @@ while gameOn:
 
         # PLAYER TURN
         if pHit != 'Stay':
-            print('PLAYER')
-            print('------')
-            print(*player, sep=' ')
+            print('-------------------')
+            print('PLAYER', *player, '('+str(pHand)+')', sep=' ')
+            print('-------------------')
             #print(player)
-            print(pHand)
-            pHit =newDeck.hit_stay(pHand,player)
+            pHit = newDeck.hit_stay(pHand,player)
             pHand = newDeck.hand_value(player)
             if newDeck.bust(pHand) == 'BUST':
                 print(player)
                 playerAcc.withdraw(playerBet)
                 dealerAcc.deposit(playerBet)
-                print ('-------------------')
-                print ('--- PLAYER BUST ---')
-                print ('-------------------')
+                statusMessage('PLAYER BUST')
                 drawOn = False
 
         # DEALER TURN        
         elif dHit != 'Stay':
-            print('DEALER')
-            print('------')
-            print(*dealer, sep=' ')
-            print(dHand)
+            print('--------------------')
+            print('DEALER', *dealer, '('+str(dHand)+')', sep=' ')
+            print('--------------------')
             dHit = newDeck.hit_stay(dHand,dealer)
             dHand = newDeck.hand_value(dealer)
             if newDeck.bust(dHand) == 'BUST':
                 print(dealer)
                 dealerAcc.withdraw(dealerBet)
                 playerAcc.deposit(dealerBet)
-                print ('-------------------')
-                print ('--- DEALER BUST ---')
-                print ('-------------------')
+                statusMessage('DEALER BUST')
                 drawOn = False
         else:
         # WINNER CHECK
@@ -100,19 +100,14 @@ while gameOn:
             if check == 'Player WINS':
                 dealerAcc.withdraw(dealerBet)
                 playerAcc.deposit(dealerBet)
-                print ('-------------------')
-                print ('--- PLAYER WINS ---')
-                print ('-------------------')
+                statusMessage('PLAYER WINS')
                 drawOn = False
             elif check == 'Dealer WINS':
                 playerAcc.withdraw(playerBet)
                 dealerAcc.deposit(playerBet)
-                print ('-------------------')
-                print ('--- DEALER WINS ---')
-                print ('-------------------')
+                statusMessage('DEALER WINS')
                 drawOn = False
             else:
-                print('--DRAW--')
-                print('--------')
+                statusMessage('DRAW')
                 drawOn = False 
 				
