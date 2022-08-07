@@ -1,5 +1,13 @@
+from ctypes.wintypes import SERVICE_STATUS_HANDLE
 from Account import Account
 from Deck import Deck
+
+
+# Game info message
+def statusMessage(message):
+    print('-------------------------------')
+    print('---- ' + message )
+    print('-------------------------------')
 
 # from IPython.display import clear_output
 # BLACK JACK GAME
@@ -9,14 +17,6 @@ newDeck.shuffle_deck()
 
 playerAcc = Account('Player',20)
 dealerAcc = Account('Dealer',20)
-
-
-def statusMessage(message):
-    filler = 18 - len(message)
-    print('---------------------')
-    print('---- ' +message.center(filler)+ ' ----')
-    print('---------------------')
-
 
 while True:
     try:
@@ -56,7 +56,7 @@ while gameOn:
     player = newDeck.draw_hand(player)
     dealer = newDeck.draw_hand(dealer)
     
-    print('DEALER', dealer[0])
+    statusMessage('DEALER'+' '+dealer[0])
 
     drawOn = True
     pHit = ''
@@ -68,9 +68,7 @@ while gameOn:
 
         # PLAYER TURN
         if pHit != 'Stay':
-            print('-------------------')
-            print('PLAYER', *player, '('+str(pHand)+')', sep=' ')
-            print('-------------------')
+            statusMessage('PLAYER'+' '+' '.join(player)+' '+'('+str(pHand)+')')
             #print(player)
             pHit = newDeck.hit_stay(pHand,player)
             pHand = newDeck.hand_value(player)
@@ -83,9 +81,7 @@ while gameOn:
 
         # DEALER TURN        
         elif dHit != 'Stay':
-            print('--------------------')
-            print('DEALER', *dealer, '('+str(dHand)+')', sep=' ')
-            print('--------------------')
+            statusMessage('DEALER'+' '+' '.join(dealer)+' '+'('+str(dHand)+')')
             dHit = newDeck.hit_stay(dHand,dealer)
             dHand = newDeck.hand_value(dealer)
             if newDeck.bust(dHand) == 'BUST':
@@ -94,8 +90,9 @@ while gameOn:
                 playerAcc.deposit(dealerBet)
                 statusMessage('DEALER BUST')
                 drawOn = False
-        else:
+                
         # WINNER CHECK
+        else:
             check = newDeck.winner(pHand,dHand)
             if check == 'Player WINS':
                 dealerAcc.withdraw(dealerBet)
