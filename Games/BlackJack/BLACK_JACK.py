@@ -5,9 +5,10 @@ from Deck import Deck
 
 # Game info message
 def statusMessage(message):
-    print('-------------------------------')
-    print('---- ' + message )
-    print('-------------------------------')
+    dec = '-------------------------------'
+    print(dec)
+    print( message.center(len(dec)) )
+    print(dec)
 
 # from IPython.display import clear_output
 # BLACK JACK GAME
@@ -42,14 +43,14 @@ while gameOn:
         newDeck.deck.extend(dealer)
     
     if playerAcc.balance == 0:
-        print('NO CA$H')
+        print('OUT OF CA$H')
         break
     elif dealerAcc.balance == 0:
-        print("NO CA$H")
+        print("OUT OF CA$H")
         break
         
     print(playerAcc)
-    statusMessage('DEALING')
+    statusMessage('====== DEALING ======')
     player = []
     dealer = []
     
@@ -76,7 +77,7 @@ while gameOn:
                 print(player)
                 playerAcc.withdraw(playerBet)
                 dealerAcc.deposit(playerBet)
-                statusMessage('PLAYER BUST')
+                statusMessage('@@@@@ PLAYER BUST @@@@@')
                 drawOn = False
 
         # DEALER TURN        
@@ -88,7 +89,7 @@ while gameOn:
                 print(dealer)
                 dealerAcc.withdraw(dealerBet)
                 playerAcc.deposit(dealerBet)
-                statusMessage('DEALER BUST')
+                statusMessage('@@@@@ DEALER BUST @@@@@')
                 drawOn = False
                 
         # WINNER CHECK
@@ -97,14 +98,14 @@ while gameOn:
             if check == 'Player WINS':
                 dealerAcc.withdraw(dealerBet)
                 playerAcc.deposit(dealerBet)
-                statusMessage('PLAYER WINS')
+                statusMessage('!!!!! PLAYER WINS !!!!!')
                 drawOn = False
             elif check == 'Dealer WINS':
                 playerAcc.withdraw(playerBet)
                 dealerAcc.deposit(playerBet)
-                statusMessage('DEALER WINS')
+                statusMessage('!!!!! DEALER WINS !!!!!')
                 drawOn = False
             else:
-                statusMessage('DRAW')
+                statusMessage('===== DRAW =====')
                 drawOn = False 
 				
