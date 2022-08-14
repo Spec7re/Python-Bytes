@@ -7,7 +7,7 @@ from Deck import Deck
 def statusMessage(message):
     dec = '-------------------------------'
     print(dec)
-    print( message.center(len(dec)) )
+    print( message.center(len(dec)) ) # Padding string with spaces
     print(dec)
 
 # from IPython.display import clear_output
